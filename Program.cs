@@ -12,7 +12,7 @@ class MyShell
         while (true)
         {
             string curDir = Environment.CurrentDirectory;
-            Console.Write($"\n[MyBalls] {curDir}> ");
+            Console.Write($"[MyBalls] {curDir}> ");
 
             string? input = Console.ReadLine();
             if (string.IsNullOrWhiteSpace(input)) continue;
