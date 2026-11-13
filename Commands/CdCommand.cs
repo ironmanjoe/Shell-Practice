@@ -1,8 +1,9 @@
 using CustomShell;
 namespace CustomShell.Commands
 {
-    public class Cd : ICommand
+    public class CdCommand : ICommand
     {
+        public string Description => "cd [path] - Change directory to the specified path. (defaults to home)";
         public void Execute(List<string> args)
         {
             string targetDir = args.Count > 0 ? string.Join(" ", args) : Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);

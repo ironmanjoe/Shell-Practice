@@ -1,7 +1,8 @@
 namespace CustomShell.Commands
 {
-    public class Cls : ICommand
+    public class ClsCommand : ICommand
     {
+        public string Description => "cls - Clear the screen";
         public void Execute(List<string> args)
         {
             Console.Clear();

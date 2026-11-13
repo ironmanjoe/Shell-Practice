@@ -9,7 +9,7 @@ class MyShell
 {
     static void Main(string[] args)
     {
-        CommandRegistry.SetUp();
+        Styling.SetUp();
         while (true)
         {
             string curDir = Environment.CurrentDirectory;
@@ -26,9 +26,10 @@ class MyShell
             if (command == "exit")
             {
                 Console.WriteLine("Exiting MyBalls. Goodbye!");
-                CommandRegistry.ColorMode(-1);
+                Styling.ColorMode(-1);
                 break;
             }
+            
             if (CommandRegistry.IsCommand(command))
             {
                 List<string> commandArgs = tokens.GetRange(1, tokens.Count - 1);

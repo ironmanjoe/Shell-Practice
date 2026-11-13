@@ -1,22 +1,33 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace CustomShell.Commands
 {
     public static class CommandRegistry
     {
-        private static readonly Dictionary<string, ICommand> _commands = new()
+        private static readonly Dictionary<string, ICommand> _commands = new();
+        static CommandRegistry()
         {
-            { "cd", new Cd() },
-            { "pwd", new Pwd() },
-            { "cls", new Cls() },
-            { "help", new Help() }
-        };
+            // Register commands here
+            var types = Assembly.GetExecutingAssembly().GetTypes().Where(t => typeof(ICommand).IsAssignableFrom(t) && !t.IsAbstract && t.IsClass);
+            foreach (var type in types)
+            {
+                if(Activator.CreateInstance(type) is ICommand commandInstance)
+                {
+                    _commands[type.Name.Replace("Command", "").ToLower()] = commandInstance;
+                }
+            }
+        }
 
         public static bool IsCommand(string input)
         {
             return _commands.ContainsKey(input.ToLower());
+        }
+
+        public static IEnumerable<ICommand> GetCommands(){
+            return _commands.Values;
         }
 
         public static bool ExecuteCommand(string command, List<string> args)
