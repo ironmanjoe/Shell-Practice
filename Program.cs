@@ -3,12 +3,13 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using CustomShell;
+using CustomShell.Commands;
 
 class MyShell
 {
     static void Main(string[] args)
     {
-        Commands.SetUp();
+        CommandRegistry.SetUp();
         while (true)
         {
             string curDir = Environment.CurrentDirectory;
@@ -25,18 +26,18 @@ class MyShell
             if (command == "exit")
             {
                 Console.WriteLine("Exiting MyBalls. Goodbye!");
-                Commands.ColorMode(-1);
+                CommandRegistry.ColorMode(-1);
                 break;
             }
-            if (Commands.IsCommand(command))
+            if (CommandRegistry.IsCommand(command))
             {
                 List<string> commandArgs = tokens.GetRange(1, tokens.Count - 1);
-                Commands.ChangeState(command, commandArgs);
+                CommandRegistry.ExecuteCommand(command, commandArgs);
             }
             else
             {
                 Console.WriteLine($"[debug] Unknown command: {command}");
-                Commands.PrintTokens(tokens);
+                CommandRegistry.PrintTokens(tokens);
             }
         }
     }
