@@ -10,7 +10,7 @@ namespace CustomShell.Commands
             {
                 Console.WriteLine(cmd.Description);
             }
-            Console.WriteLine("== Type 'exit' to quit the shell ==");
+            Console.WriteLine("== Type 'exit' to quit the shell ==\n");
         }
     }
 }

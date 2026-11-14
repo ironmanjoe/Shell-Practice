@@ -6,7 +6,7 @@ namespace CustomShell.Commands
         public string Description => "cd [path] - Change directory to the specified path. (defaults to home)";
         public void Execute(List<string> args)
         {
-            string targetDir = args.Count > 0 ? string.Join(" ", args) : Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+            string targetDir = args.Count == 0 || args[0].Equals("~") ? Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) : args[0];
             Styling.ColorMode(1);
             try
             {
