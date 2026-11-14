@@ -17,12 +17,12 @@ public static class Styling
         switch (mode)
         {
             case 0:
-                Console.BackgroundColor = ConsoleColor.DarkBlue;
-                Console.ForegroundColor = ConsoleColor.White;
+                Console.BackgroundColor = ConsoleColor.Black;
+                Console.ForegroundColor = ConsoleColor.Green;
                 break;
             case 1:
-                Console.ForegroundColor =  ConsoleColor.Red;
                 Console.BackgroundColor = ConsoleColor.White;
+                Console.ForegroundColor =  ConsoleColor.Red;
                 break;
             default:
                 Console.ResetColor();
