@@ -2,6 +2,12 @@ namespace CustomShell;
 
 public static class Styling
 {
+    private const string Reset = "\u001b[0m";
+    private const string Red = "\u001b[31m";
+    private const string Green = "\u001b[32m";
+    private const string White = "\u001b[37m";
+    private const string Bold = "\u001b[1m";
+
     public static void SetColors(ConsoleColor background, ConsoleColor foreground)
     {
         Console.BackgroundColor = background;
@@ -17,15 +23,13 @@ public static class Styling
         switch (mode)
         {
             case 0:
-                Console.BackgroundColor = ConsoleColor.Black;
-                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write(Green);
                 break;
             case 1:
-                Console.BackgroundColor = ConsoleColor.White;
-                Console.ForegroundColor =  ConsoleColor.Red;
+                Console.Write(Red);
                 break;
             default:
-                Console.ResetColor();
+                Console.Write(Reset);
                 break;
         }
     }

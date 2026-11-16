@@ -37,8 +37,10 @@ class MyShell
             }
             else
             {
+                Styling.ColorMode(1);
                 Console.WriteLine($"[debug] Unknown command: {command}");
                 CommandRegistry.PrintTokens(tokens);
+                Styling.ColorMode(0);
             }
         }
     }
