@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 namespace CustomShell.Commands
 {
+    [ShellCommand("touch")]
     public class TouchCommand : BaseCommand
     {
         public override string Description => "touch <filename> - Create a new empty file with the specified filename.";

@@ -1,4 +1,7 @@
+using System;
+using System.Linq;
 using System.Reflection;
+using System.Collections.Generic;
 
 namespace CustomShell.Commands
 {
@@ -9,18 +12,32 @@ namespace CustomShell.Commands
         {
             // Register commands here
             var types = Assembly.GetExecutingAssembly().GetTypes().Where(t => typeof(ICommand).IsAssignableFrom(t) && !t.IsAbstract && t.IsClass);
+
             foreach (var type in types)
             {
+                var attribute = type.GetCustomAttribute<ShellCommandAttribute>();
+                string commandName;
+                
+                if (attribute != null)
+                {
+                    commandName = attribute.Name.ToLower();
+                }
+
+                else
+                {
+                    commandName = type.Name.Replace("Command", "").ToLower();
+                }
+
                 if(Activator.CreateInstance(type) is ICommand commandInstance)
                 {
-                    _commands[type.Name.Replace("Command", "").ToLower()] = commandInstance;
+                    _commands[commandName] = commandInstance;
                 }
             }
         }
 
         public static bool IsCommand(string input)
         {
-            return _commands.ContainsKey(input.ToLower());
+            return _commands.ContainsKey(input.Trim().ToLower());
         }
 
         public static IEnumerable<ICommand> GetCommands(){
@@ -29,17 +46,18 @@ namespace CustomShell.Commands
 
         public static bool ExecuteCommand(string command, List<string> args)
         {
-            string cmd = command.ToLower();
+            string cmd = command.Trim().ToLower();
+
             if (_commands.TryGetValue(cmd, out ICommand? commandInstance))
             {
                 commandInstance.Execute(args);
                 return true;
             }
+
             else
             {
                 Styling.ColorMode(1);
-                Console.WriteLine($"[debug] Unknown command: {command}");
-                PrintTokens(args);
+                Console.WriteLine($"[debug] Unknown command: '{command}'");
                 Styling.ColorMode(0);
                 return false;
             }

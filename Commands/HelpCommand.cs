@@ -1,5 +1,6 @@
 namespace CustomShell.Commands
 {
+    [ShellCommand("help")]
     public class HelpCommand : BaseCommand
     {
         public override string Description => "help - Display this help message";

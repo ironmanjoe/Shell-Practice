@@ -2,6 +2,7 @@ using CustomShell;
 using System.IO;
 namespace CustomShell.Commands
 {
+    [ShellCommand("mkdir")]
     public class MkdirCommand : BaseCommand
     {
         public override string Description => "mkdir <path> - Create a new directory at the specified path.";

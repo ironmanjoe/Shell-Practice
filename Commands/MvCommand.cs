@@ -1,5 +1,6 @@
 namespace CustomShell.Commands
 {
+    [ShellCommand("mv")]
     public class MvCommand : BaseCommand
     {
         public override string Description => "mv <source> <destination> - Move/rename files or directories.";

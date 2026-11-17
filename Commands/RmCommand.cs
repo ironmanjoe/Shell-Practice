@@ -3,6 +3,7 @@ using System.IO;
 
 namespace CustomShell.Commands
 {
+    [ShellCommand("rm")]
     public class RmCommand : BaseCommand
     {
         public override string Description => "rm <filename> - Remove the specified files or directories.";

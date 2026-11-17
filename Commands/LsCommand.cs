@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace CustomShell.Commands
 {
+    [ShellCommand("ls")]
     public class LsCommand : BaseCommand
     {
         public override string Description => "ls <path> - List files and directories in the specified path (or current directory if no path is provided)";

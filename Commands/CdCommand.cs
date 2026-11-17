@@ -4,6 +4,7 @@ using System.IO;
 
 namespace CustomShell.Commands
 {
+    [ShellCommand("cd")]
     public class CdCommand : BaseCommand
     {
         public override string Description => "cd <path> - Change directory to the specified path. (defaults to home)";
