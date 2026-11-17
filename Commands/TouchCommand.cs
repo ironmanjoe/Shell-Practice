@@ -1,47 +1,34 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
 namespace CustomShell.Commands
 {
-    public class TouchCommand : ICommand
+    public class TouchCommand : BaseCommand
     {
-        public string Description => "touch <filename> - Create a new empty file with the specified filename.";
-        public void Execute(List<string> args)
+        public override string Description => "touch <filename> - Create a new empty file with the specified filename.";
+        protected override void ExecuteCommand(List<string> args)
         {
-            Styling.ColorMode(1);
             if (args.Count == 0)
             {
-                Console.WriteLine("No argument provided. Usage: touch <filename>");
-                Styling.ColorMode(0);
-                return;
+                throw new ArgumentException("No argument provided. Usage: touch <filename>");
             }
+
             if (Directory.Exists(args[0]))
             {
-                Console.WriteLine($"Error: Path '{args[0]}' already exists.");
-                Styling.ColorMode(0);
-                return;
+                throw new DirectoryNotFoundException($"Error: Path '{args[0]}' already exists.");
             }
+
             if (File.Exists(args[0]))
             {
-                Styling.ColorMode(0);
-                Console.WriteLine($"File '{args[0]}' already exists.");
-                return;
+                throw new FileNotFoundException($"File '{args[0]}' already exists.");
             }
+
             string filename = args[0];
-            try
+
+            using (FileStream fs = File.Create(filename))
             {
-                using (FileStream fs = File.Create(filename))
-                {
-                    Styling.ColorMode(0);
-                    Console.WriteLine($"File '{filename}' created successfully.");
-                }
+                Console.WriteLine($"File '{filename}' created successfully.");
             }
-            catch (UnauthorizedAccessException)
-            {
-                Console.WriteLine($"Error: Access to create file '{filename}' is denied.");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error creating file '{filename}': {ex.Message}");
-            }
-            Styling.ColorMode(0);
         }
     }
 }

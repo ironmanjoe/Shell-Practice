@@ -1,71 +1,62 @@
+using System;
+using System.IO;
+
 namespace CustomShell.Commands
 {
-    public class RmCommand : ICommand
+    public class RmCommand : BaseCommand
     {
-        public string Description => "rm <filename> - Remove the specified files or directories.";
-        public void Execute(List<string> args)
+        public override string Description => "rm <filename> - Remove the specified files or directories.";
+        protected override void ExecuteCommand(List<string> args)
         {
-            Styling.ColorMode(1);
             if (args.Count == 0)
             {
-                Console.WriteLine("No path provided. Usage: rm [-r] <filename>");
-                Styling.ColorMode(0);
-                return;
+                throw new ArgumentException("No path provided. Usage: rm [-r] <filename>");
             }
+
             bool recursive = false;
             string filename;
+
             if (args.Count > 1 && args[0].Equals("-r", StringComparison.CurrentCultureIgnoreCase))
             {
                 recursive = true;
                 filename = args[1];
             }
+
             else
             {
                 filename = args[0];
             }
+
             if(string.IsNullOrEmpty(filename))
             {
-                Console.WriteLine("No path provided. Usage: rm [-r] <filename>");
-                Styling.ColorMode(0);
-                return;
+                throw new ArgumentException("No path provided. Usage: rm [-r] <filename>");
             }
+
             if (!File.Exists(filename) && !Directory.Exists(filename))
             {
-                Console.WriteLine($"Error: Path '{filename}' does not exist.");
-                Styling.ColorMode(0);
-                return;
+                throw new FileNotFoundException($"Error: Path '{filename}' does not exist.");
             }
-            try
+
+
+            if (Directory.Exists(filename))
             {
-                if (Directory.Exists(filename))
+                if (recursive)
                 {
-                    if (recursive)
-                    {
-                        Directory.Delete(filename, recursive);
-                        Styling.ColorMode(0);
-                        Console.WriteLine($"Directory '{filename}' deleted successfully.");
-                    }
-                    else
-                    {
-                        Console.WriteLine($"Error: '{filename}' is a directory. Use 'rm -r <directory>' to delete it recursively.");
-                    }
+                    Directory.Delete(filename, recursive);
+                    Console.WriteLine($"Directory '{filename}' deleted successfully.");
                 }
+
                 else
                 {
-                    File.Delete(filename);
-                    Styling.ColorMode(0);
-                    Console.WriteLine($"File '{filename}' deleted successfully.");
+                    throw new ArgumentException($"Error: '{filename}' is a directory. Use 'rm -r <directory>' to delete it recursively.");
                 }
             }
-            catch (UnauthorizedAccessException)
+
+            else
             {
-                Console.WriteLine($"Error: Access to delete file '{filename}' is denied.");
+                File.Delete(filename);
+                Console.WriteLine($"File '{filename}' deleted successfully.");
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error deleting file '{filename}': {ex.Message}");
-            }
-            Styling.ColorMode(0);
         }
     }
 }

@@ -1,17 +1,13 @@
 namespace CustomShell.Commands
 {
-    public class MvCommand : ICommand
+    public class MvCommand : BaseCommand
     {
-        public string Description => "mv <source> <destination> - Move/rename files or directories.";
-        public void Execute(List<string> args)
+        public override string Description => "mv <source> <destination> - Move/rename files or directories.";
+        protected override void ExecuteCommand(List<string> args)
         {
-            Styling.ColorMode(1);
-
             if (args.Count < 2)
             {
-                Console.WriteLine("Insufficient arguments. Usage: mv <source> <destination>");
-                Styling.ColorMode(0);
-                return;
+                throw new ArgumentException("Insufficient arguments. Usage: mv <source> <destination>");
             }
 
             string source = args[0];
@@ -19,50 +15,27 @@ namespace CustomShell.Commands
 
             if (!File.Exists(source) && !Directory.Exists(source))
             {
-                Console.WriteLine($"Error: Source path '{source}' does not exist.");
-                Styling.ColorMode(0);
-                return;
+                throw new FileNotFoundException($"Error: Source path '{source}' does not exist.");
             }
 
-            try
+            string finalDestination = destination;
+
+            if (Directory.Exists(destination))
             {
-                string finalDestination = destination;
-                if (Directory.Exists(destination))
-                {
-                    finalDestination = Path.Combine(destination, Path.GetFileName(source));
-                }
-
-                if (Directory.Exists(source))
-                {
-                    Directory.Move(source, finalDestination);
-                    Styling.ColorMode(0);
-                    Console.WriteLine($"Directory '{source}' moved to '{finalDestination}' successfully.");
-                }
-
-                else
-                {
-                    File.Move(source, finalDestination);
-                    Styling.ColorMode(0);
-                    Console.WriteLine($"File '{source}' moved to '{finalDestination}' successfully.");
-                }
+                finalDestination = Path.Combine(destination, Path.GetFileName(source));
             }
 
-            catch (UnauthorizedAccessException)
+            if (Directory.Exists(source))
             {
-                Console.WriteLine($"Error: Access denied while moving '{source}' to '{destination}'.");
+                Directory.Move(source, finalDestination);
+                Console.WriteLine($"Directory '{source}' moved to '{finalDestination}' successfully.");
             }
 
-            catch (IOException ex)
+            else
             {
-                Console.WriteLine($"Error: {ex.Message}");
+                File.Move(source, finalDestination);
+                Console.WriteLine($"File '{source}' moved to '{finalDestination}' successfully.");
             }
-
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error: {ex.Message}");
-            }
-            
-            Styling.ColorMode(0);
         }
     }
 }

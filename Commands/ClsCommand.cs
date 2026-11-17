@@ -1,9 +1,9 @@
 namespace CustomShell.Commands
 {
-    public class ClsCommand : ICommand
+    public class ClsCommand : BaseCommand
     {
-        public string Description => "cls - Clear the screen";
-        public void Execute(List<string> args)
+        public override string Description => "cls - Clear the screen";
+        protected override void ExecuteCommand(List<string> args)
         {
             Console.Clear();
         }

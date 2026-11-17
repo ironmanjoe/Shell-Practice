@@ -1,9 +1,9 @@
 namespace CustomShell.Commands
 {
-    public class HelpCommand : ICommand
+    public class HelpCommand : BaseCommand
     {
-        public string Description => "help - Display this help message";
-        public void Execute(List<string> args)
+        public override string Description => "help - Display this help message";
+        protected override void ExecuteCommand(List<string> args)
         {
             Console.WriteLine("\n== Available Commands ==");
             foreach (var cmd in CommandRegistry.GetCommands())

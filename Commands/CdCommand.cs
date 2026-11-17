@@ -1,30 +1,16 @@
-using CustomShell;
+using System;
+using System.Collections.Generic;
+using System.IO;
+
 namespace CustomShell.Commands
 {
-    public class CdCommand : ICommand
+    public class CdCommand : BaseCommand
     {
-        public string Description => "cd <path> - Change directory to the specified path. (defaults to home)";
-        public void Execute(List<string> args)
+        public override string Description => "cd <path> - Change directory to the specified path. (defaults to home)";
+        protected override void ExecuteCommand(List<string> args)
         {
             string targetDir = args.Count == 0 || args[0].Equals("~") ? Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) : args[0];
-            Styling.ColorMode(1);
-            try
-            {
-                Directory.SetCurrentDirectory(targetDir);
-            }
-            catch (DirectoryNotFoundException)
-            {
-                Console.WriteLine($"Error: Directory '{targetDir}' not found.");
-            }
-            catch (UnauthorizedAccessException)
-            {
-                Console.WriteLine($"Error: Access to directory '{targetDir}' is denied.");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error changing directory: {ex.Message}");
-            }
-            Styling.ColorMode(0);
+            Directory.SetCurrentDirectory(targetDir);
         }
     }
 }

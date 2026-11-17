@@ -1,9 +1,9 @@
 namespace CustomShell.Commands
 {
-    public class PwdCommand: ICommand
+    public class PwdCommand: BaseCommand
     {
-        public string Description => "pwd - Print the current working directory";
-        public void Execute(List<string> args)
+        public override string Description => "pwd - Print the current working directory";
+        protected override void ExecuteCommand(List<string> args)
         {
             Console.WriteLine(Environment.CurrentDirectory);
         }
