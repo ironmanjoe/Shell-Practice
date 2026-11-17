@@ -5,7 +5,7 @@ namespace CustomShell.Commands
 {
     public class LsCommand : ICommand
     {
-        public string Description => "ls [path] - List files and directories in the specified path (or current directory if no path is provided)";
+        public string Description => "ls <path> - List files and directories in the specified path (or current directory if no path is provided)";
         public void Execute(List<string> args)
         {
             string path = args.Count > 0 ? args[0] : Environment.CurrentDirectory;

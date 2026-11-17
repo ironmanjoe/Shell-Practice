@@ -4,7 +4,7 @@ namespace CustomShell.Commands
 {
     public class MkdirCommand : ICommand
     {
-        public string Description => "mkdir [path] - Create a new directory at the specified path.";
+        public string Description => "mkdir <path> - Create a new directory at the specified path.";
         public void Execute(List<string> args)
         {
             Styling.ColorMode(1);
